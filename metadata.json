@@ -1,0 +1,6 @@
+{
+  "name": "BioAlbra",
+  "description": "A premium biological exploration and earth sustainability portal. Discover ecological regeneration, comparative case studies of biological failures, and configure your local sustainability ledger.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
