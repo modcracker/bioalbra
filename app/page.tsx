@@ -222,7 +222,7 @@ export default function Home({
     <div className="min-h-screen bg-stone-50 text-stone-900 selection:bg-emerald-100 selection:text-emerald-900" id="bioalbra-app">
       
       {/* Pristine Human-Designed Scholarly Masthead */}
-      <header className="border-b border-stone-200 bg-white/95 backdrop-blur-md sticky top-0 z-50 px-6 py-4 md:px-12" id="header-navbar">
+      <header className="border-b border-stone-200 bg-white/95 backdrop-blur-md sticky top-0 z-50 px-6 py-4 md:px-12" id="header-navbar" aria-label="Global Scholarly Masthead">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <div className="relative flex items-center justify-center w-11 h-11 rounded-full border border-stone-300 bg-stone-50/50 shadow-inner">
@@ -245,7 +245,7 @@ export default function Home({
           </div>
 
           <div className="flex items-center gap-6">
-            <nav className="hidden md:flex items-center gap-6 text-xs font-bold uppercase tracking-wider text-stone-600">
+            <nav className="hidden md:flex items-center gap-6 text-xs font-bold uppercase tracking-wider text-stone-600" aria-label="Portal Navigation">
               <a href="#about-section" className="hover:text-emerald-800 transition-colors">Portal Info</a>
               <a href="#scientific-index-section" className="hover:text-emerald-800 transition-colors">Scholarly Archives</a>
               <a href="#simulator-section" className="hover:text-emerald-800 transition-colors">Ecosystem Simulator</a>
@@ -265,10 +265,10 @@ export default function Home({
       </header>
 
       {/* Main Container */}
-      <main className="max-w-7xl mx-auto px-6 py-12 md:px-12 space-y-20">
+      <main className="max-w-7xl mx-auto px-6 py-12 md:px-12 space-y-20" aria-label="BioAlbra Main Scholarly Content">
 
         {/* Editorial Welcome & GoDaddy Registry Access */}
-        <section id="about-section" className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start border-b border-stone-200 pb-16">
+        <section id="about-section" aria-label="Welcome and Asset Acquisition Section" className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start border-b border-stone-200 pb-16">
           
           {/* Left Welcome */}
           <div className="lg:col-span-7 space-y-6">
@@ -302,9 +302,10 @@ export default function Home({
             <div className="relative w-full h-36 rounded border border-stone-200 overflow-hidden shadow-inner">
               <Image
                 src={bioalbraHero}
-                alt="BioAlbra Environmental and Biological Systems"
-                fill
-                className="object-cover hover:scale-105 transition-transform duration-700"
+                alt={`Biological research illustration for: ${selectedArticle.title}`}
+                width={800}
+                height={144}
+                className="w-full h-36 object-cover hover:scale-105 transition-transform duration-700"
                 referrerPolicy="no-referrer"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-stone-950/40 to-transparent pointer-events-none" />
@@ -336,7 +337,7 @@ export default function Home({
         </section>
 
         {/* Deep Scholarly Document Directory Explorer */}
-        <section id="scientific-index-section" className="space-y-6">
+        <section id="scientific-index-section" aria-label="Scholarly Peer-Reviewed Archives Explorer" className="space-y-6">
           <div className="max-w-3xl space-y-2">
             <div className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-850 uppercase tracking-widest">
               <Book className="w-4 h-4" /> Open-Access Scientific Repositories
@@ -588,7 +589,7 @@ export default function Home({
 
 
         {/* Interactive Ecological Advisor / Advisor Simulator Section */}
-        <section id="simulator-section" className="bg-white border border-stone-200 rounded-xl p-6 md:p-10 space-y-8 shadow-sm">
+        <section id="simulator-section" aria-label="Ecosystem Viability Prediction Engine" className="bg-white border border-stone-200 rounded-xl p-6 md:p-10 space-y-8 shadow-sm">
           
           <div className="max-w-3xl space-y-3">
             <div className="inline-flex items-center gap-2 text-xs font-bold text-emerald-850 uppercase tracking-widest">
@@ -807,7 +808,7 @@ export default function Home({
 
 
         {/* Interactive Sustainability Diary / Ledger */}
-        <section id="ledger-section" className="bg-white border border-stone-200 rounded-xl p-6 md:p-10 space-y-8 shadow-sm">
+        <section id="ledger-section" aria-label="Localized Stewardship Register and Ledger" className="bg-white border border-stone-200 rounded-xl p-6 md:p-10 space-y-8 shadow-sm">
 
           {/* Heading and Planet Sinking Impact Meter */}
           <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 pb-6 border-b border-stone-100">
@@ -977,7 +978,7 @@ export default function Home({
       </main>
 
       {/* Pristine Modern Footer */}
-      <footer className="border-t border-stone-200 bg-white py-12 px-6 md:px-12 text-stone-600 mt-20">
+      <footer className="border-t border-stone-200 bg-white py-12 px-6 md:px-12 text-stone-600 mt-20" aria-label="BioAlbra Consortium Informational Footer">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
           <div className="space-y-2">
             <span className="font-serif italic font-extrabold text-2xl tracking-tight text-stone-900">BioAlbra</span>

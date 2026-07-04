@@ -1,4 +1,4 @@
-import type {Metadata} from 'next';
+import type {Metadata, Viewport} from 'next';
 import { Inter, Space_Grotesk, JetBrains_Mono } from 'next/font/google';
 import './globals.css'; // Global styles
 
@@ -16,6 +16,11 @@ const jetbrainsMono = JetBrains_Mono({
   subsets: ['latin'],
   variable: '--font-mono',
 });
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+};
 
 export const metadata: Metadata = {
   title: {
@@ -65,6 +70,9 @@ export const metadata: Metadata = {
 export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
     <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable}`}>
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </head>
       <body className="font-sans antialiased bg-stone-50 text-stone-900 min-h-screen selection:bg-emerald-100 selection:text-emerald-900" suppressHydrationWarning>
         {children}
       </body>

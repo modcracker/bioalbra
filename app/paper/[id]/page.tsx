@@ -129,7 +129,7 @@ export default async function PaperPage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       {/* Top Banner / Breadcrumb Nav */}
-      <nav className="border-b border-stone-200/80 bg-white sticky top-0 z-10 shadow-sm" id="paper-navigation">
+      <nav className="border-b border-stone-200/80 bg-white sticky top-0 z-10 shadow-sm" id="paper-navigation" aria-label="Paper Navigation Breadcrumb">
         <div className="max-w-4xl mx-auto px-4 py-3 sm:px-6 lg:px-8 flex items-center justify-between">
           <div className="flex items-center space-x-2 text-stone-500 text-xs sm:text-sm">
             <Link 
@@ -165,11 +165,11 @@ export default async function PaperPage({ params }: Props) {
       </nav>
 
       {/* Main Container */}
-      <main className="max-w-4xl mx-auto px-4 py-8 sm:px-6 lg:px-8" id="paper-main-content">
-        <article className="bg-white border border-stone-200/80 rounded-2xl p-6 sm:p-10 shadow-sm space-y-8">
+      <main className="max-w-4xl mx-auto px-4 py-8 sm:px-6 lg:px-8" id="paper-main-content" aria-label="Scholarly Article Reader">
+        <article className="bg-white border border-stone-200/80 rounded-2xl p-6 sm:p-10 shadow-sm space-y-8" aria-label="Peer-Reviewed Academic Paper">
           
           {/* Header metadata */}
-          <header className="space-y-4" id="paper-header">
+          <header className="space-y-4" id="paper-header" aria-label="Academic Paper Metadata Header">
             <div className="flex items-center space-x-2">
               <span className="px-2.5 py-1 text-[10px] sm:text-xs font-semibold tracking-wider text-emerald-800 bg-emerald-50 rounded-full uppercase border border-emerald-100">
                 {category ? category.name : categoryId}
@@ -200,7 +200,7 @@ export default async function PaperPage({ params }: Props) {
           </header>
 
           {/* Abstract callout */}
-          <section className="p-5 sm:p-6 bg-[#fbfbf9] rounded-xl border-l-4 border-emerald-600 space-y-2" id="paper-abstract-section">
+          <section className="p-5 sm:p-6 bg-[#fbfbf9] rounded-xl border-l-4 border-emerald-600 space-y-2" id="paper-abstract-section" aria-label="Executive Abstract Summary">
             <h2 className="text-xs font-semibold tracking-wider text-emerald-800 uppercase flex items-center space-x-1.5">
               <BookOpen className="w-3.5 h-3.5" />
               <span>Abstract Summary</span>
@@ -211,7 +211,7 @@ export default async function PaperPage({ params }: Props) {
           </section>
 
           {/* Technical Metadata Matrix */}
-          <section className="space-y-4" id="paper-technical-matrix">
+          <section className="space-y-4" id="paper-technical-matrix" aria-label="Scientific Classification and Parameters">
             <h2 className="text-sm font-semibold tracking-wider text-stone-500 uppercase">
               Scientific Classification & Parameters
             </h2>
@@ -329,13 +329,13 @@ export default async function PaperPage({ params }: Props) {
           </div>
 
           {/* Footer of report */}
-          <footer className="border-t border-stone-200 pt-6 text-center text-xs text-stone-400 font-mono">
+          <footer className="border-t border-stone-200 pt-6 text-center text-xs text-stone-400 font-mono" aria-label="Academic Paper Archival Footer">
             BIOALBRA ARCHIVAL RECORD &bull; CLASSIFICATION ID: {paper.id} &bull; CONTI-MATRIX MODEL V4
           </footer>
         </article>
 
         {/* RELATED PAPERS - Deep Crawl Interlinking Mesh! */}
-        <section className="mt-12 space-y-4" id="related-papers-section">
+        <section className="mt-12 space-y-4" id="related-papers-section" aria-label="Related Peer-Reviewed Research">
           <h2 className="text-base sm:text-lg font-serif font-semibold text-stone-900 flex items-center space-x-2">
             <BookOpen className="w-5 h-5 text-emerald-800" />
             <span>More Research in {category ? category.name : categoryId}</span>
