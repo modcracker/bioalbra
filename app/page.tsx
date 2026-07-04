@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion, AnimatePresence } from "motion/react";
 import {
   Leaf,
@@ -29,644 +30,28 @@ import {
 } from "lucide-react";
 import bioalbraHero from "@/src/assets/images/bioalbra_hero_1783195759558.jpg";
 
-interface AcademicPaper {
-  id: string;
-  category: string;
-  title: string;
-  summary: string;
-  publishDate: string;
-  author: string;
-  metadata: {
-    topic: string;
-    crop: string;
-    fungi: string;
-    failureRegion: string;
-    remediationMethod: string;
-    siteType: string;
-  };
-}
+import { folders, ACADEMIC_PAPERS, getPaperContent, subCategories } from "@/lib/data";
+import type { AcademicPaper, DiaryEntry } from "@/lib/data";
 
-interface DiaryEntry {
-  id: string;
-  action: string;
-  category: string;
-  impactScore: number;
-  date: string;
-}
+// Academic papers are imported from lib/data.ts
 
-// 8 Categories mapping perfectly to earth sustaining, biology-first domains
-const folders = [
-  { id: "canopy", name: "Terrestrial Canopies & Soils", desc: "Forest dynamics, topsoil holding, and desertification mitigation grids." },
-  { id: "aquatic", name: "Hydrology & Marine Biomes", desc: "Eutrophication reversal, algal bio-filtering, and closed-loop irrigation." },
-  { id: "phytoremed", name: "Phytoremediation & Botany", desc: "Herbaceous extraction of chemical contaminants and heavy metals." },
-  { id: "taxonomy", name: "Mycorrhizal & Soil Taxonomy", desc: "Symbiotic fungal-root classifications and microbial genetics." },
-  { id: "arid", name: "Arid-Zone Reclamation", desc: "Halophyte windbreaks, biological micro-crusts, and saline moisture trapping." },
-  { id: "agriculture", name: "Agricultural Nutrient Runoff", desc: "Biocide depletion, rhizobia companion cropping, and paddy blankets." },
-  { id: "urban", name: "Urban Micro-Reserves", desc: "Stormwater bioswales, Miyawaki forests, and myco-filtration bio-berms." },
-  { id: "metals", name: "Heavy Metal Decontamination", desc: "Nickel hyper-accumulation, organic chelator washes, and plume barriers." },
-];
+// Content rendering is handled by lib/data.ts
 
-// Complete Database of 32 academic papers (4 per category)
-const ACADEMIC_PAPERS: AcademicPaper[] = [
-  // --- CANOPY RESTORATION (4 PAPERS) ---
-  {
-    id: "canopy-1",
-    category: "canopy",
-    title: "Mycorrhizal Inoculation in Tropical Reforestation",
-    summary: "An analysis of forest floor moisture trapping using customized fungal grid nodes to halt soil leaching.",
-    publishDate: "May 14, 2026",
-    author: "Dr. Elian Vance, JALH Senior Board Member",
-    metadata: {
-      topic: "sub-surface soil matrices in highly weathered tropical zones",
-      crop: "Inga edulis and Glomus intraradices",
-      fungi: "Glomeromycota",
-      failureRegion: "Amazonian Basin Canopy Transition",
-      remediationMethod: "leguminous pioneer crop seeding",
-      siteType: "steep clay forest slopes",
-    },
-  },
-  {
-    id: "canopy-2",
-    category: "canopy",
-    title: "Canopy Transition Dynamics in Secondary Growth Rain Forests",
-    summary: "Evaluating light infiltration and understory moisture loss during early succession phases.",
-    publishDate: "April 19, 2026",
-    author: "Prof. Laura Sterling, Forestry Research Institute",
-    metadata: {
-      topic: "understory solar radiation and moisture retention curves",
-      crop: "Cecropia peltata and arbuscular endomycorrhizae",
-      fungi: "Endogonales",
-      failureRegion: "Cerrado Woodland Fragmentation",
-      remediationMethod: "staggered canopy shade-cloth corridors",
-      siteType: "weathered plateau soils",
-    },
-  },
-  {
-    id: "canopy-3",
-    category: "canopy",
-    title: "Root-Binding Systems for Landslide Avoidance in Silvicultural Zones",
-    summary: "Quantifying shear strength enhancement of topsoils via high-density root network mapping.",
-    publishDate: "March 11, 2026",
-    author: "Dr. Keith Sterling, Mountain Slope Reclamation Unit",
-    metadata: {
-      topic: "mechanical soil cohesion and root tensile stress",
-      crop: "Alnus rubra and ectomycorrhizal symbioses",
-      fungi: "Frankia bacteria",
-      failureRegion: "Andean Foothill Landslide Scars",
-      remediationMethod: "high-density slope girding with alder seedlings",
-      siteType: "unconsolidated mountain gravel",
-    },
-  },
-  {
-    id: "canopy-4",
-    category: "canopy",
-    title: "Temperate Old-Growth Microclimates and Understory Spore Migration",
-    summary: "Modeling spore distribution patterns of native fungi within dense primary forest floors.",
-    publishDate: "February 08, 2026",
-    author: "Prof. Charles Mercer, Cascade Forest Ecology Lab",
-    metadata: {
-      topic: "spore transport vectors and forest litter humic layers",
-      crop: "Pseudotsuga menziesii and Rhizopogon species",
-      fungi: "Basidiomycota",
-      failureRegion: "Olympic Peninsula Fire Scars",
-      remediationMethod: "nurse-log fungal inoculations",
-      siteType: "coniferous forest duff layers",
-    },
-  },
-
-  // --- AQUATIC SYSTEMS (4 PAPERS) ---
-  {
-    id: "aquatic-1",
-    category: "aquatic",
-    title: "Phosphate Sequestration Models in Riparian Vetiver Buffers",
-    summary: "Mitigating synthetic fertilizer run-off in agricultural buffer zones using deep-root filtration.",
-    publishDate: "June 28, 2026",
-    author: "Dr. Sarah Jenkins, Great Lakes Restoration Alliance",
-    metadata: {
-      topic: "dissolved phosphate and nitrogen agricultural run-off",
-      crop: "Vetiveria zizanioides and phosphate-solubilizing bacteria",
-      fungi: "Glomus mosseae",
-      failureRegion: "Mississippi Delta Marine Dead Zone",
-      remediationMethod: "riparian vetiver vegetative hedges",
-      siteType: "agricultural drainage margins",
-    },
-  },
-  {
-    id: "aquatic-2",
-    category: "aquatic",
-    title: "Macroalgal Bio-Filters for Dissolved Oxygen Restoration in Dead Zones",
-    summary: "Cultivating giant kelp forest arrays to absorb oceanic nutrient excess and prevent algae blooms.",
-    publishDate: "June 11, 2026",
-    author: "Capt. Julian Mercer, Marine Bio-Systems Group",
-    metadata: {
-      topic: "dissolved oxygen depletion and oceanic fertilizer dumping",
-      crop: "Macrocystis pyrifera and kelp-associated epiphytic microbes",
-      fungi: "Marine Actinobacteria",
-      failureRegion: "Baltic Sea Hypoxic Basins",
-      remediationMethod: "suspended macroalgal long-line culture",
-      siteType: "coastal thermal corridors",
-    },
-  },
-  {
-    id: "aquatic-3",
-    category: "aquatic",
-    title: "Eutrophication Reversal in Closed-Loop Drainage Tributaries",
-    summary: "Designing automated bioswales and floating wetlands to digest urban stormwater phosphates.",
-    publishDate: "May 04, 2026",
-    author: "Dr. Angela Rossi, Urban Hydrology Initiative",
-    metadata: {
-      topic: "stormwater runoff and urban nutrient loading",
-      crop: "Phragmites australis and root-associated denitrifying bacteria",
-      fungi: "Ascomycota",
-      failureRegion: "Everglades Drainage Canal Outflows",
-      remediationMethod: "floating treatment wetland matrices",
-      siteType: "shallow slow-moving canals",
-    },
-  },
-  {
-    id: "aquatic-4",
-    category: "aquatic",
-    title: "Hydrological Flow Interceptors in Agricultural Marshlands",
-    summary: "Modeling physical silt retention and chemical plume mitigation using sedge-based wetlands.",
-    publishDate: "April 01, 2026",
-    author: "Prof. Daniel Wu, Wetland Conservation Alliance",
-    metadata: {
-      topic: "silt transport and agricultural chemical plumes",
-      crop: "Carex stricta and anaerobic root-zone microbes",
-      fungi: "Chytridiomycota",
-      failureRegion: "San Joaquin Valley Aquifer Depletion",
-      remediationMethod: "engineered marshland sediment basins",
-      siteType: "low-lying floodplain margins",
-    },
-  },
-
-  // --- PHYTOREMEDIATION & BOTANY (4 PAPERS) ---
-  {
-    id: "phytoremed-1",
-    category: "phytoremed",
-    title: "Industrial Herbaceous Extraction of Lead and Cadmium from Soil",
-    summary: "Exploring phytoremediation pathways using industrial hemp cultivars to extract heavy metals.",
-    publishDate: "March 19, 2026",
-    author: "Dr. Althea Thorne, ReleafCanna Botanical Research",
-    metadata: {
-      topic: "lead, cadmium, and nickel topsoil contamination",
-      crop: "Cannabis sativa and heavy-metal phytochelatins",
-      fungi: "Metal-tolerant arbuscular fungi",
-      failureRegion: "Bengal Industrial Basin Contamination",
-      remediationMethod: "high-density industrial hemp planting cycles",
-      siteType: "industrial smelting slag yards",
-    },
-  },
-  {
-    id: "phytoremed-2",
-    category: "phytoremed",
-    title: "Aromatic Terpenes as Natural Nematode Deterrents in Monocultures",
-    summary: "Using natural volatile botanical secretions to suppress parasitic soil pests without biocides.",
-    publishDate: "February 27, 2026",
-    author: "Prof. Kenneth Cole, ReleafCanna Soil Chemistry Division",
-    metadata: {
-      topic: "parasitic nematodes and pathogenic soil fungi",
-      crop: "Tagetes patula and terpene-producing cultivars",
-      fungi: "Trichoderma species",
-      failureRegion: "Central Valley Almond Orchard Decline",
-      remediationMethod: "companion cover-cropping with marigolds",
-      siteType: "heavily fumigated sandy loam",
-    },
-  },
-  {
-    id: "phytoremed-3",
-    category: "phytoremed",
-    title: "Hyper-Accumulator Cultivars in Mining Slag Re-Vegetation",
-    summary: "Evaluating survival and metal extraction rates of alpine brassica in highly acidic tailing soils.",
-    publishDate: "January 15, 2026",
-    author: "Dr. Jean-Marc Blanc, European Soils Council",
-    metadata: {
-      topic: "acid-mine drainage and zinc-cadmium tailings",
-      crop: "Noccaea caerulescens and zinc-hyperaccumulating microbes",
-      fungi: "Pyronemataceae",
-      failureRegion: "Rhine Valley Mining Slag Collapse",
-      remediationMethod: "limed slag planting with alpine brassica",
-      siteType: "highly acidic mine tailings",
-    },
-  },
-  {
-    id: "phytoremed-4",
-    category: "phytoremed",
-    title: "Phytochelatin Synthesis under Extreme Heavy Metal Stress",
-    summary: "Analyzing intracellular binding pathways that protect hyper-accumulating plants from toxicity.",
-    publishDate: "December 10, 2025",
-    author: "Dr. Clara Vance, ReleafCanna Phytochemistry Lab",
-    metadata: {
-      topic: "intracellular metal-binding peptides and cellular stress",
-      crop: "Helianthus annuus and glutathione-synthesizing bacteria",
-      fungi: "Mycorrhizal Glomus species",
-      failureRegion: "Midwest Coal Fly Ash Ponds",
-      remediationMethod: "foliar-applied organic chelating sprays",
-      siteType: "saturated fly ash sediment",
-    },
-  },
-
-  // --- MYCORRHIZAL & SOIL TAXONOMY (4 PAPERS) ---
-  {
-    id: "taxonomy-1",
-    category: "taxonomy",
-    title: "Glomeromycota Species Trees and Mycorrhizal Symbiosis Matching",
-    summary: "A review of arbuscular mycorrhizal classifications designed to expand root absorption surface areas.",
-    publishDate: "January 15, 2026",
-    author: "Dr. Theron Thorne, Neaner Institute of Taxonomy",
-    metadata: {
-      topic: "host-symbiont genetic compatibility and root surface expansion",
-      crop: "Zea mays and Glomus mosseae strains",
-      fungi: "Glomeromycota",
-      failureRegion: "Great Plains Intensive Soil Compaction",
-      remediationMethod: "direct spore inoculation of seed drill rows",
-      siteType: "depleted clay crop rows",
-    },
-  },
-  {
-    id: "taxonomy-2",
-    category: "taxonomy",
-    title: "Lignin-Degrading Basidiomycetes in Forest Biomass Renewal",
-    summary: "Analyzing the role of white-rot fungi in wood decomposition and soil organic carbon generation.",
-    publishDate: "February 04, 2026",
-    author: "Dr. Chloe Vance, Neaner Fungal Genetics Lab",
-    metadata: {
-      topic: "lignin-peroxidase enzymatic decomposition of woody debris",
-      crop: "Quercus robur and Trametes versicolor cultures",
-      fungi: "Basidiomycetes",
-      failureRegion: "California Sierra Nevada Wildfire Accumulation",
-      remediationMethod: "wood-chip mulch fungal inoculation",
-      siteType: "burned forest floor debris",
-    },
-  },
-  {
-    id: "taxonomy-3",
-    category: "taxonomy",
-    title: "Halophilic Bacteria Strains in High Osmotic Pressure Saline Soils",
-    summary: "Classifying salt-tolerant bacteria that support plant root growth under extreme salinity conditions.",
-    publishDate: "March 02, 2026",
-    author: "Dr. Omar Farooq, Neaner Arid Microbiome Unit",
-    metadata: {
-      topic: "high osmotic pressure and salt-stress root cell desiccation",
-      crop: "Salicornia europaea and halophilic rhizobacteria",
-      fungi: "Microascales",
-      failureRegion: "Colorado River Basin Salinity Encroachment",
-      remediationMethod: "saline irrigation bacterial inoculation",
-      siteType: "heavily salinized dry clay silt",
-    },
-  },
-  {
-    id: "taxonomy-4",
-    category: "taxonomy",
-    title: "Ectomycorrhizal Ecology in Post-Fire Coniferous Regeneration",
-    summary: "Mapping changes in subterranean fungal networks following high-intensity forest fire disturbances.",
-    publishDate: "April 14, 2026",
-    author: "Dr. Evelyn Reed, Northwest Fungal Ecology Lab",
-    metadata: {
-      topic: "soil heating sterilization and fungal spore survival",
-      crop: "Pinus ponderosa and Wilcoxina rehmii inoculants",
-      fungi: "Pezizales",
-      failureRegion: "Oregon Cascade Post-Fire Hydrophobicity",
-      remediationMethod: "aerial mycorrhizal slurry drops",
-      siteType: "hydrophobic ash-covered slopes",
-    },
-  },
-
-  // --- ARID-ZONE RECLAMATION (4 PAPERS) ---
-  {
-    id: "arid-1",
-    category: "arid",
-    title: "Halophyte Girding and Saline Basin Moisture Trapping",
-    summary: "Combating desertification in high-salinity water basins with Black Saxaul planting and microbial crusting.",
-    publishDate: "April 02, 2026",
-    author: "Prof. Marais Dupont, Institute of Dryland Forestry",
-    metadata: {
-      topic: "high salinity dust storms and dryland topsoil desertification",
-      crop: "Haloxylon aphyllum and dryland halophytes",
-      fungi: "Halophilic Glomeromycota",
-      failureRegion: "Aral Sea Basin Hydrological Crisis",
-      remediationMethod: "multi-layered windbreak halophyte girds",
-      siteType: "exposed hypersaline dry lakebeds",
-    },
-  },
-  {
-    id: "arid-2",
-    category: "arid",
-    title: "Biological Micro-Crust Formation on Sandy Desert Fringes",
-    summary: "Accelerating the development of soil-stabilizing cyanobacteria crusts using organic liquid binders.",
-    publishDate: "May 09, 2026",
-    author: "Dr. Sofia Alvarez, Atacama Soil Science Lab",
-    metadata: {
-      topic: "sandy desertification wind-shear topsoil transport",
-      crop: "Microcoleus vaginatus and soil-binding cyanobacteria",
-      fungi: "Lecanorales",
-      failureRegion: "Gobi Desert Agricultural Encroachment",
-      remediationMethod: "liquid cyanobacterial inoculant spraying",
-      siteType: "unconsolidated mobile sand dunes",
-    },
-  },
-  {
-    id: "arid-3",
-    category: "arid",
-    title: "Black Saxaul Canopy Establishment in High-Wind Plains",
-    summary: "Analyzing windbreak friction and microclimate formation of drought-hardy saxaul stands.",
-    publishDate: "June 03, 2026",
-    author: "Dr. Kairat Umarov, Central Asian Steppe Center",
-    metadata: {
-      topic: "wind-friction velocity reduction and desert microclimates",
-      crop: "Haloxylon ammodendron and drought-hardy shrubs",
-      fungi: "Dothideales",
-      failureRegion: "Taklamakan Desert Boundary Collapse",
-      remediationMethod: "checkerboard straw barrier grid seeding",
-      siteType: "extremely arid hyper-wind plains",
-    },
-  },
-  {
-    id: "arid-4",
-    category: "arid",
-    title: "Deep-Taproot Hydrology and Brackish Aquifer Drawing",
-    summary: "Modeling groundwater draw rates and salt excretion of desert woody perennial roots.",
-    publishDate: "July 01, 2026",
-    author: "Prof. Isaac Stern, Negev Desert Hydrology Unit",
-    metadata: {
-      topic: "deep aquifer drawing and foliar salt extrusion",
-      crop: "Tamarix aphylla and deep-rooted perennials",
-      fungi: "Pleosporales",
-      failureRegion: "Jordan River Basin Ground Sinking",
-      remediationMethod: "brackish-water taproot agroforestry",
-      siteType: "deep hyper-brackish water tables",
-    },
-  },
-
-  // --- AGRICULTURAL NUTRIENT RUNOFF (4 PAPERS) ---
-  {
-    id: "agriculture-1",
-    category: "agriculture",
-    title: "Biocide Depletion Metrics of Beneficial Rhizobacteria",
-    summary: "Tracking the degradation of synthetic pesticides and fungicides by specialized soil bacteria.",
-    publishDate: "May 12, 2026",
-    author: "Dr. Linus Pauling, Agri-Chemical Safety Council",
-    metadata: {
-      topic: "synthetic pesticide residues and soil microbiome sterilization",
-      crop: "Glycine max and pesticide-degrading pseudomonads",
-      fungi: "Penicillium species",
-      failureRegion: "Central Valley Biocide Microbiome Depletion",
-      remediationMethod: "biological soil-drench dinitrogen washes",
-      siteType: "chemically saturated corn fields",
-    },
-  },
-  {
-    id: "agriculture-2",
-    category: "agriculture",
-    title: "Companion Cropping Grids for Rhizobia Nitrogen Fixation",
-    summary: "Designing high-density co-planting grids to eliminate the need for synthetic ammonia.",
-    publishDate: "June 01, 2026",
-    author: "Prof. Elena Rostova, European Agronomy Institute",
-    metadata: {
-      topic: "synthetic ammonia fertilizer and soil nitrifier shutdown",
-      crop: "Trifolium pratense and Rhizobium leguminosarum",
-      fungi: "Endomycorrhizal strains",
-      failureRegion: "Midwest Corn Belt Nitrogen Saturated Basins",
-      remediationMethod: "checkerboard clover companion cropping grids",
-      siteType: "nitrogen-leached industrial farmlands",
-    },
-  },
-  {
-    id: "agriculture-3",
-    category: "agriculture",
-    title: "Synthetic Fertilizer Runoff Abatement in Wet Rice Paddies",
-    summary: "Reducing agricultural run-off into inland river basins via biological azolla-fern mats.",
-    publishDate: "June 22, 2026",
-    author: "Dr. Hiroshi Tanaka, Asian Wet Paddy Union",
-    metadata: {
-      topic: "dissolved ammonia runoff and paddy water eutrophication",
-      crop: "Azolla filiculoides and nitrogen-fixing Anabaena cyanobacteria",
-      fungi: "Rhizophydiales",
-      failureRegion: "Mekong Delta Fertilizer Runoff Plumes",
-      remediationMethod: "floating azolla fern aquatic blankets",
-      siteType: "flooded alluvial soil fields",
-    },
-  },
-  {
-    id: "agriculture-4",
-    category: "agriculture",
-    title: "Soil Organic Carbon Sequestration in No-Till Cover Crops",
-    summary: "Quantifying soil organic matter accumulation and humification under permanent ground cover.",
-    publishDate: "July 10, 2026",
-    author: "Dr. Maria Guerrero, Soil Carbon Alliance",
-    metadata: {
-      topic: "soil organic carbon depleting and humic acid decay",
-      crop: "Secale cereale and deep-root winter cover rye",
-      fungi: "Sordariales",
-      failureRegion: "Ukrainian Steppe Topsoil Erosion",
-      remediationMethod: "no-till multi-species cover cropping",
-      siteType: "highly degraded black earth loam",
-    },
-  },
-
-  // --- URBAN MICRO-RESERVES (4 PAPERS) ---
-  {
-    id: "urban-1",
-    category: "urban",
-    title: "Stormwater Bioswales with Native Milkweed and Sedge Matrices",
-    summary: "Designing urban stormwater basins to filter automotive heavy metals and highway debris.",
-    publishDate: "May 25, 2026",
-    author: "Dr. Angela Rossi, Urban Bioswale Group",
-    metadata: {
-      topic: "automotive highway runoff and lead-cadmium stormwater loading",
-      crop: "Asclepias syriaca and wetland sedges",
-      fungi: "Glomus intraradices",
-      failureRegion: "Los Angeles River Urban Runoff",
-      remediationMethod: "stormwater bioswales with native vegetation",
-      siteType: "compacted clay roadside easements",
-    },
-  },
-  {
-    id: "urban-2",
-    category: "urban",
-    title: "Microclimatic Cooling via High-Density Native Urban Shrublands",
-    summary: "Using compact urban mini-forests (Miyawaki method) to combat extreme heat islands.",
-    publishDate: "June 15, 2026",
-    author: "Dr. Kenji Sato, Miyawaki Urban Forest Lab",
-    metadata: {
-      topic: "urban heat island effect and concrete thermal radiation",
-      crop: "Quercus robur and high-density native understory",
-      fungi: "Boletales",
-      failureRegion: "Tokyo Concrete Heat Island Canopy Collapse",
-      remediationMethod: "high-density multi-tiered micro-forest planting",
-      siteType: "urban demolition vacant lots",
-    },
-  },
-  {
-    id: "urban-3",
-    category: "urban",
-    title: "Mycorrhizal Inoculation of Stressed Street Trees in Compact Soils",
-    summary: "Enhancing survival rates of sidewalk trees under heavy soil compaction and salt exposure.",
-    publishDate: "June 29, 2026",
-    author: "Prof. Arthur Pendelton, Arboricultural Research Center",
-    metadata: {
-      topic: "soil compaction oxygen deprivation and sidewalk salt exposure",
-      crop: "Acer rubrum and ectomycorrhizal inoculants",
-      fungi: "Sclerodermataceae",
-      failureRegion: "New York City Sidewalk Canopy Dieback",
-      remediationMethod: "air-spade aeration and fungal root slurries",
-      siteType: "urban street sidewalk pits",
-    },
-  },
-  {
-    id: "urban-4",
-    category: "urban",
-    title: "Urban Runoff Remediation via In-Situ Myco-Filtration Berms",
-    summary: "Using straw-bale and wood-chip mushroom filters to trap pathogens from stormwater outfalls.",
-    publishDate: "July 11, 2026",
-    author: "Dr. Paul Stamets Jr., Urban Myco-Restoration Lab",
-    metadata: {
-      topic: "pathogenic bacterial loading and stormwater sewer overflows",
-      crop: "Pleurotus ostreatus and hardwood chip substrates",
-      fungi: "Agaricales",
-      failureRegion: "Seattle Puget Sound Pathogen Stormwater Leaks",
-      remediationMethod: "woodchip myco-filtration bio-berms",
-      siteType: "sloped drainage ditch outfalls",
-    },
-  },
-
-  // --- HEAVY METAL DECONTAMINATION (4 PAPERS) ---
-  {
-    id: "metals-1",
-    category: "metals",
-    title: "Nickel Hyper-Accumulation Profiles of Brassicaceae Cultivars",
-    summary: "Exploring phytomining and nickel bio-concentration mechanisms in serpentine soils.",
-    publishDate: "March 02, 2026",
-    author: "Dr. Helga Vance, Heavy Metal Botanical Research",
-    metadata: {
-      topic: "serpentine rock weathering and industrial nickel slag tailing",
-      crop: "Alyssum bertolonii and metal-binding rhizobacteria",
-      fungi: "Ectomycorrhizae",
-      failureRegion: "New Caledonia Sericite Tailings",
-      remediationMethod: "high-density brassica hyper-accumulator planting",
-      siteType: "crushed raw serpentine ore deposits",
-    },
-  },
-  {
-    id: "metals-2",
-    category: "metals",
-    title: "Chelating Agent Synergies in Herbaceous Soil Cleansing",
-    summary: "Evaluating the impacts of organic chelating acids on heavy metal mobilization and root uptake.",
-    publishDate: "April 14, 2026",
-    author: "Prof. Marcus Aurelius, Soil Chemistry Institute",
-    metadata: {
-      topic: "low metal mobility and intracellular root cell transfer barrier",
-      crop: "Helianthus annuus and organic citric acid additives",
-      fungi: "Arbuscular mycorrhiza",
-      failureRegion: "Silesian Smelting Plume Contamination",
-      remediationMethod: "organic chelator-assisted soil washing cycles",
-      siteType: "heavy smelting fall-out crop soil",
-    },
-  },
-  {
-    id: "metals-3",
-    category: "metals",
-    title: "Subterranean Heavy Metal Plume Interception via Willow Barriers",
-    summary: "Using deep-rooted willow species to halt downward migration of toxic industrial plumes.",
-    publishDate: "May 10, 2026",
-    author: "Dr. Catherine Dubois, European Remediation Agency",
-    metadata: {
-      topic: "subterranean chemical plumes and downward aquifer lead migration",
-      crop: "Salix viminalis and cadmium-tolerant endophytes",
-      fungi: "Helotiales",
-      failureRegion: "Rhone River Valley Chemical Waste Seepage",
-      remediationMethod: "transverse deep-rooted willow bio-barriers",
-      siteType: "saturated sand gravel aquifers",
-    },
-  },
-  {
-    id: "metals-4",
-    category: "metals",
-    title: "Mine Tailing Bio-Stabilization with Organic Soil Inoculants",
-    summary: "Securing fine mine tailing dust using organic polymers and bacterial soil binders to prevent dust travel.",
-    publishDate: "May 29, 2026",
-    author: "Prof. Harold Finch, Mining Soil Reclamation Group",
-    metadata: {
-      topic: "fine mine tailing wind erosion and heavy metal dust storms",
-      crop: "Festuca rubra and calcium-precipitating microbes",
-      fungi: "Pezizaceae",
-      failureRegion: "Arizona Copper Mine Tailings Dust Blow",
-      remediationMethod: "microbial induced carbonate precipitation spraying",
-      siteType: "dry barren mine tailing piles",
-    },
-  },
-];
-
-// Rich, human-designed scientific text rendering engine containing 384 unique, deterministically generated subliminal hyperlinks
-function getPaperContent(category: string, paper: AcademicPaper, sectionId: string) {
-  const { topic, crop, fungi, failureRegion, remediationMethod, siteType } = paper.metadata;
-  
-  // Fully unique deterministic URL strings representing deep archival paths on external domains
-  const biofailUrl = `https://biofail.com/collapse/${category}/${paper.id}-${sectionId}-diagnostic-rf91`;
-  const releafcannaUrl = `https://releafcanna.com/phytomedicine/${category}/${paper.id}-${sectionId}-extraction-tm22`;
-  const neanerUrl = `https://neaner.com/taxonomy/${category}/${paper.id}-${sectionId}-species-ax04`;
-  const chosenspotUrl = `https://chosenspot.com/siting/${category}/${paper.id}-${sectionId}-topology-gp08`;
-  const jalhUrl = `https://jalh.com/archives/vol-22-${category}/${paper.id}-${sectionId}-directives-lh33`;
-
-  if (sectionId === "abstract") {
-    return (
-      <div className="space-y-4">
-        <p className="text-stone-700 leading-relaxed text-sm">
-          This research paper establishes a rigorous, field-verified technical framework for evaluating the integration of <strong className="text-stone-900 font-semibold">{topic}</strong> within highly stressed ecological zones. Recent field trials indicate that the absence of structured, active biological intervention consistently results in severe, irreversible canopy transition and topsoil degradation, a phenomenon documented extensively in the original <a href={biofailUrl} target="_blank" rel="noopener noreferrer" className="text-emerald-800 underline hover:text-emerald-950 font-medium">{failureRegion} Environmental Failure Assessment (biofail.com)</a>.
-        </p>
-        <p className="text-stone-700 leading-relaxed text-sm">
-          To combat these cascading failures, our restorative protocols advocate for the targeted deployment of <strong className="text-stone-900 font-semibold">{fungi}</strong> lineages, designed to establish physical and chemical barriers against moisture leaching. These fungal taxons are registered in the <a href={neanerUrl} target="_blank" rel="noopener noreferrer" className="text-emerald-800 underline hover:text-emerald-950 font-medium">{fungi} Mycorrhizal Taxonomy Register (neaner.com)</a>. Optimal seeding densities and physical landing sites are mapped using the <a href={chosenspotUrl} target="_blank" rel="noopener noreferrer" className="text-emerald-800 underline hover:text-emerald-950 font-medium">{siteType} Spatial Siting Planner (chosenspot.com)</a> to ensure maximum drainage stabilization.
-        </p>
-      </div>
-    );
-  }
-
-  if (sectionId === "dynamics") {
-    return (
-      <div className="space-y-4">
-        <p className="text-stone-700 leading-relaxed text-sm">
-          The underlying subterranean dynamics of the root-soil interface rely on microclimatic networks formed by <strong className="text-stone-900 font-semibold">{crop}</strong>. Investigations published in the <a href={jalhUrl} target="_blank" rel="noopener noreferrer" className="text-emerald-800 underline hover:text-emerald-950 font-medium">JALH Journal of Ecological Reclamation (jalh.com)</a> prove that plants lacking these mutualistic root nodes exhibit high sapling mortality and suffer from localized water-table depletion.
-        </p>
-        <p className="text-stone-700 leading-relaxed text-sm">
-          To measure root exudation and metabolic activity under drought stress, we utilize phytochemical extraction profiles detailed in the <a href={releafcannaUrl} target="_blank" rel="noopener noreferrer" className="text-emerald-800 underline hover:text-emerald-950 font-medium">ReleafCanna Botanical Remediation Standards (releafcanna.com)</a>. By profiling specific terpenoid and phytochelatin secretions, we are able to calculate the absolute stress tolerance of host cultivars. These chemical metrics are cross-referenced with taxonomic registers to isolate compatible high-performance ecotypes.
-        </p>
-      </div>
-    );
-  }
-
-  if (sectionId === "failures") {
-    return (
-      <div className="space-y-4">
-        <p className="text-stone-700 leading-relaxed text-sm">
-          A critical challenge in regional soil restoration is mitigating the cascading chemical and biological failures that historically compromised adjacent basins. Collapse records compiled in the <a href={biofailUrl} target="_blank" rel="noopener noreferrer" className="text-emerald-800 underline hover:text-emerald-950 font-medium">BioFail Ecological Failure Directory (biofail.com)</a> demonstrate that standard reforestation efforts fail when pioneer crops are exposed to synthetic biocide accumulation without microbial support.
-        </p>
-        <p className="text-stone-700 leading-relaxed text-sm">
-          Our proposed model mitigates these risks by establishing robust vegetative filters using <strong className="text-stone-900 font-semibold">{remediationMethod}</strong>. Placement parameters and slope stabilization gradients are optimized using the <a href={chosenspotUrl} target="_blank" rel="noopener noreferrer" className="text-emerald-800 underline hover:text-emerald-950 font-medium">ChosenSpot Riparian Flow Interceptor Model (chosenspot.com)</a>. This structured vegetative wall acts as an underground intercept barrier, safeguarding groundwater from down-gradient chemical migration as described in the <a href={jalhUrl} target="_blank" rel="noopener noreferrer" className="text-emerald-800 underline hover:text-emerald-950 font-medium">JALH Transboundary Water Hydrology Manual (jalh.com)</a>.
-        </p>
-      </div>
-    );
-  }
-
-  if (sectionId === "siting") {
-    return (
-      <div className="space-y-4">
-        <p className="text-stone-700 leading-relaxed text-sm">
-          Ensuring long-term biological viability requires precise land-use matching and climate zone micro-mapping. Soil retention thresholds and windbreak geometries are simulated via the <a href={chosenspotUrl} target="_blank" rel="noopener noreferrer" className="text-emerald-800 underline hover:text-emerald-950 font-medium">ChosenSpot Climate Envelope & Soil Retention Matrix (chosenspot.com)</a>. This prevents premature root detachment during extreme rainfall events on steep, vulnerable slopes.
-        </p>
-        <p className="text-stone-700 leading-relaxed text-sm">
-          The chemical absorption efficiency and metal hyper-accumulation rates are validated against experimental curves in the <a href={releafcannaUrl} target="_blank" rel="noopener noreferrer" className="text-emerald-800 underline hover:text-emerald-950 font-medium">ReleafCanna Heavy Metal Extraction Ledger (releafcanna.com)</a>. Finally, the localized soil-moisture feedback loops and transboundary water retention factors are indexed within the <a href={jalhUrl} target="_blank" rel="noopener noreferrer" className="text-emerald-800 underline hover:text-emerald-950 font-medium">JALH Soil Organic Chemistry Index (jalh.com)</a>, solidifying the ecological database.
-        </p>
-      </div>
-    );
-  }
-
-  return null;
-}
-
-export default function Home() {
+export default function Home({ 
+  initialFolder = "canopy",
+  initialSubcategory
+}: { 
+  initialFolder?: string;
+  initialSubcategory?: string;
+}) {
   // Navigation states
-  const [activeFolder, setActiveFolder] = useState<string>("canopy");
-  const [activeArticleId, setActiveArticleId] = useState<string>("canopy-1");
+  const [activeFolder, setActiveFolder] = useState<string>(initialFolder);
+  const [activeSubcategory, setActiveSubcategory] = useState<string | null>(initialSubcategory || null);
+  const [activeArticleId, setActiveArticleId] = useState<string>(
+    initialSubcategory 
+      ? (ACADEMIC_PAPERS.find((a) => a.category === initialFolder && a.subCategory === initialSubcategory)?.id || `${initialFolder}-1`)
+      : `${initialFolder}-1`
+  );
   const [activeSectionId, setActiveSectionId] = useState<string>("abstract");
   const [searchQuery, setSearchQuery] = useState<string>("");
 
@@ -815,15 +200,16 @@ export default function Home() {
     }
   };
 
-  // Filter papers inside active category with search queries
+  // Filter papers inside active category with search queries and subcategory
   const filteredArticles = ACADEMIC_PAPERS.filter(
     (art) =>
       art.category === activeFolder &&
+      (!activeSubcategory || art.subCategory === activeSubcategory) &&
       (art.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         art.summary.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
-  const selectedArticle = ACADEMIC_PAPERS.find((art) => art.id === activeArticleId) || ACADEMIC_PAPERS[0];
+  const selectedArticle = filteredArticles.find((art) => art.id === activeArticleId) || filteredArticles[0] || ACADEMIC_PAPERS[0];
 
   // Specific outbound urls for Reference Gateway
   const biofailUrl = `https://biofail.com/collapse/${activeFolder}/${selectedArticle.id}-${activeSectionId}-indices-rf91`;
@@ -976,6 +362,7 @@ export default function Home() {
                       key={f.id}
                       onClick={() => {
                         setActiveFolder(f.id);
+                        setActiveSubcategory(null);
                         // Auto-select first article in folder
                         const folderArts = ACADEMIC_PAPERS.filter((a) => a.category === f.id);
                         if (folderArts.length > 0) {
@@ -1004,6 +391,49 @@ export default function Home() {
                 <div className="flex items-center justify-between">
                   <span className="text-[10px] font-bold text-stone-400 uppercase tracking-widest block">Sub-Page Documents</span>
                   <span className="text-[10px] font-mono text-stone-500 font-bold">({filteredArticles.length} files)</span>
+                </div>
+
+                {/* Sub-categories Selection */}
+                <div className="space-y-1 pt-1">
+                  <span className="text-[9px] font-bold text-stone-400 uppercase tracking-widest block">Scientific Disciplines</span>
+                  <div className="flex flex-wrap gap-1 pb-1.5 border-b border-stone-100">
+                    <button
+                      onClick={() => {
+                        setActiveSubcategory(null);
+                        const folderArts = ACADEMIC_PAPERS.filter((a) => a.category === activeFolder);
+                        if (folderArts.length > 0) {
+                          setActiveArticleId(folderArts[0].id);
+                        }
+                      }}
+                      className={`px-2 py-0.5 rounded text-[9px] font-bold transition-all border ${
+                        !activeSubcategory
+                          ? "bg-emerald-800 border-emerald-850 text-white shadow-sm"
+                          : "bg-stone-50 border-stone-200 text-stone-600 hover:bg-stone-100"
+                      }`}
+                    >
+                      All
+                    </button>
+                    {subCategories.filter(s => s.categoryId === activeFolder).map((sub) => (
+                      <button
+                        key={sub.id}
+                        onClick={() => {
+                          setActiveSubcategory(sub.id);
+                          const subArts = ACADEMIC_PAPERS.filter((a) => a.category === activeFolder && a.subCategory === sub.id);
+                          if (subArts.length > 0) {
+                            setActiveArticleId(subArts[0].id);
+                          }
+                        }}
+                        className={`px-2 py-0.5 rounded text-[9px] font-bold transition-all border ${
+                          activeSubcategory === sub.id
+                            ? "bg-emerald-800 border-emerald-850 text-white shadow-sm"
+                            : "bg-stone-50 border-stone-200 text-stone-600 hover:bg-stone-100"
+                        }`}
+                        title={sub.desc}
+                      >
+                        {sub.name}
+                      </button>
+                    ))}
+                  </div>
                 </div>
 
                 <div className="relative">
@@ -1047,9 +477,17 @@ export default function Home() {
               
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-stone-100">
                 <div className="space-y-1">
-                  <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-emerald-850 bg-emerald-50 border border-emerald-100 px-2 py-0.5 rounded">
-                    Scientific Archive Ref // {selectedArticle.id.toUpperCase()}
-                  </span>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-emerald-850 bg-emerald-50 border border-emerald-100 px-2 py-0.5 rounded">
+                      Scientific Archive Ref // {selectedArticle.id.toUpperCase()}
+                    </span>
+                    <Link
+                      href={`/paper/${selectedArticle.id}`}
+                      className="text-[10px] text-emerald-850 hover:text-emerald-950 font-bold hover:underline inline-flex items-center gap-0.5"
+                    >
+                      Read Standalone Report &rarr;
+                    </Link>
+                  </div>
                   <h3 className="font-display text-2xl font-black text-stone-900 tracking-tight mt-1.5">
                     {selectedArticle.title}
                   </h3>
