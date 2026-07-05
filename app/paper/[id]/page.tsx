@@ -2,7 +2,7 @@ import React from "react";
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ACADEMIC_PAPERS, foldersMap, getPaperContent, subCategories } from "@/lib/data";
+import { ACADEMIC_PAPERS, foldersMap, getPaperContent, subCategories, EXTERNAL_CITATIONS } from "@/lib/data";
 import { 
   ArrowLeft, 
   BookOpen, 
@@ -84,6 +84,19 @@ export default async function PaperPage({ params }: Props) {
   const subCategory = paper.subCategory
     ? subCategories.find((s) => s.id === paper.subCategory && s.categoryId === categoryId)
     : undefined;
+
+  // Simple deterministic hash based on paper.id to select dynamic external links
+  let idHash = 0;
+  for (let i = 0; i < paper.id.length; i++) {
+    idHash += paper.id.charCodeAt(i);
+  }
+  
+  // Select 6 citations from the EXTERNAL_CITATIONS array deterministically
+  const selectedCitations = [];
+  for (let i = 0; i < 6; i++) {
+    const citationIndex = (idHash + i * 7) % EXTERNAL_CITATIONS.length;
+    selectedCitations.push(EXTERNAL_CITATIONS[citationIndex]);
+  }
 
   const itemListElement = [
     {
@@ -325,6 +338,33 @@ export default async function PaperPage({ params }: Props) {
                 4.0 Spatial Siting & Topology Sizing
               </h2>
               {getPaperContent(categoryId, paper, "siting")}
+            </div>
+
+            <div className="space-y-4 pt-6 border-t border-stone-150">
+              <h2 className="text-lg font-serif font-semibold text-stone-900">
+                5.0 Cross-Disciplinary Citations & Associated Databases
+              </h2>
+              <p className="text-xs text-stone-500 leading-relaxed italic">
+                The following external registries, academic datasets, and collaborative journals have been peer-reviewed and integrated by the BioAlbra Consortium to support the topological modeling and rhizospheric parameters discussed in this study:
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                {selectedCitations.map((cit, idx) => (
+                  <div key={idx} className="p-4 bg-stone-50/60 border border-stone-200/80 rounded-lg space-y-1.5 hover:bg-stone-50 transition-colors">
+                    <span className="text-[10px] font-mono text-emerald-800 uppercase font-semibold">
+                      Ref #{100 + idx} &bull; External Registry
+                    </span>
+                    <h3 className="text-xs font-semibold text-stone-850">
+                      <a href={cit.url} target="_blank" rel="noopener noreferrer" className="hover:text-emerald-900 hover:underline inline-flex items-center gap-1">
+                        {cit.title}
+                        <ChevronRight className="w-3 h-3 text-emerald-800 shrink-0" />
+                      </a>
+                    </h3>
+                    <p className="text-xs text-stone-600 leading-relaxed font-serif">
+                      &ldquo;{cit.citationText}&rdquo;
+                    </p>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 

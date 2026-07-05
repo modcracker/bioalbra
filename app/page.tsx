@@ -30,7 +30,7 @@ import {
 } from "lucide-react";
 import bioalbraHero from "@/src/assets/images/bioalbra_hero_1783195759558.jpg";
 
-import { folders, ACADEMIC_PAPERS, getPaperContent, subCategories } from "@/lib/data";
+import { folders, ACADEMIC_PAPERS, getPaperContent, subCategories, EXTERNAL_CITATIONS } from "@/lib/data";
 import type { AcademicPaper, DiaryEntry } from "@/lib/data";
 
 // Academic papers are imported from lib/data.ts
@@ -67,6 +67,7 @@ export default function Home({
   const [newAction, setNewAction] = useState("");
   const [newCategory, setNewCategory] = useState("Energy & Carbon");
   const [newImpact, setNewImpact] = useState(15);
+  const [showPartnerDirectory, setShowPartnerDirectory] = useState(false);
 
   const presetActions = [
     { label: "Planted native oak saplings", category: "Biodiversity", impact: 30 },
@@ -998,6 +999,42 @@ export default function Home({
             </a>
           </div>
         </div>
+
+        {/* Subtle Peer Registry Matrix */}
+        <div className="max-w-7xl mx-auto mt-8 pt-8 border-t border-stone-100">
+          <div className="flex items-center justify-between">
+            <button
+              onClick={() => setShowPartnerDirectory(!showPartnerDirectory)}
+              className="text-xs font-mono font-bold uppercase tracking-wider text-stone-500 hover:text-emerald-800 transition-colors flex items-center gap-2 cursor-pointer"
+            >
+              <span>{showPartnerDirectory ? "Hide" : "Show"} Consortium Allied Registries & Data Nodes ({EXTERNAL_CITATIONS.length})</span>
+              <span className={`transform transition-transform ${showPartnerDirectory ? "rotate-180" : ""}`}>▼</span>
+            </button>
+            <span className="text-[10px] text-stone-400 font-mono hidden md:inline">INDEX RECONCILIATION: ACTIVE &bull; PROTO-MESH V2</span>
+          </div>
+
+          {showPartnerDirectory && (
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-x-6 gap-y-4 pt-6 text-[11px] border-t border-stone-50 mt-4 animate-fade-in">
+              {EXTERNAL_CITATIONS.map((cit, idx) => (
+                <div key={idx} className="space-y-1">
+                  <a
+                    href={cit.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-bold text-stone-700 hover:text-emerald-850 hover:underline inline-flex items-center gap-1"
+                  >
+                    <span>{cit.domain}</span>
+                    <ExternalLink className="w-2.5 h-2.5 text-stone-400" />
+                  </a>
+                  <p className="text-stone-500 line-clamp-2 leading-relaxed text-[10px]" title={cit.title}>
+                    {cit.title}
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
         <div className="max-w-7xl mx-auto pt-8 mt-8 border-t border-stone-100 text-center text-xs text-stone-400">
           <p>© {new Date().getFullYear()} BioAlbra Research Consortium. All peer-reviewed material is registered open access.</p>
         </div>

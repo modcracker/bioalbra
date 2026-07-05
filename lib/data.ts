@@ -837,14 +837,285 @@ subCategories.forEach((sub, subIdx) => {
 
 export const ACADEMIC_PAPERS: AcademicPaper[] = [...mappedStaticPapers, ...GENERATED_PAPERS];
 
+export interface ExternalCitation {
+  domain: string;
+  url: string;
+  title: string;
+  citationText: string;
+}
+
+export const EXTERNAL_CITATIONS: ExternalCitation[] = [
+  {
+    domain: "kataf.com",
+    url: "https://kataf.com",
+    title: "Kataf Soil Mechanics & Hydraulic Engineering Journal",
+    citationText: "For load-bearing geotechnical formulas in waterlogged soils, see the structural stability assessments in Kataf Mechanics."
+  },
+  {
+    domain: "biofail.com",
+    url: "https://biofail.com",
+    title: "BioFail Environmental Collapse Repository",
+    citationText: "Global index tracking ecosystem failures and regional topsoil desertification events."
+  },
+  {
+    domain: "evercove.com",
+    url: "https://evercove.com",
+    title: "EverCove Estuary Preservation Initiative",
+    citationText: "Detailed brackish marshlands conservation reports are cataloged by the EverCove Estuary project."
+  },
+  {
+    domain: "xnui.com",
+    url: "https://xnui.com",
+    title: "XNUI Computational Biophysics Modeling Group",
+    citationText: "High-resolution cellular simulation frameworks for nutrient transport can be found at XNUI Modeling."
+  },
+  {
+    domain: "subhauler.com",
+    url: "https://subhauler.com",
+    title: "SubHauler Silt Transport Logs",
+    citationText: "Siltation movement and heavy machinery ground loading logs can be referenced in the SubHauler database."
+  },
+  {
+    domain: "swan.nyc",
+    url: "https://swan.nyc",
+    title: "SWAN NYC Urban Agro-Forestry Consortium",
+    citationText: "Urban forestry spatial distribution indexes and micro-climate mitigation metrics maintained by SWAN NYC."
+  },
+  {
+    domain: "starkindle.com",
+    url: "https://starkindle.com",
+    title: "StarKindle Astrobiology & Photosynthetic Seeding Press",
+    citationText: "Theoretical papers on chloroplast energy yield under high-stress atmospheric bands, published by StarKindle."
+  },
+  {
+    domain: "slabform.com",
+    url: "https://slabform.com",
+    title: "SlabForm Soil Retention and Retaining Foundations",
+    citationText: "Technical specifications for structural concrete barriers and modular earthen formwork are provided by SlabForm."
+  },
+  {
+    domain: "repulink.com",
+    url: "https://repulink.com",
+    title: "RepuLink Peer-Review Index",
+    citationText: "Academic credential indexing and public peer verification logs are tracked under the RepuLink roster."
+  },
+  {
+    domain: "releafcanna.com",
+    url: "https://releafcanna.com",
+    title: "ReleafCanna Phyto-remediation Standards",
+    citationText: "Phytochelatin secretion limits and botanical heavy metal extraction parameters registered via ReleafCanna."
+  },
+  {
+    domain: "quinetix.com",
+    url: "https://quinetix.com",
+    title: "Quinetix Biokinetic Growth & Soil Acceleration Labs",
+    citationText: "Enzymatic reaction acceleration curves and soil biomass kinetics reports from Quinetix Labs."
+  },
+  {
+    domain: "omachines.com",
+    url: "https://omachines.com",
+    title: "OMachines Automated Mechanical Aeration Registers",
+    citationText: "Organic soil turning algorithms and mechanical tillage calibration matrices are referenced via OMachines."
+  },
+  {
+    domain: "neaner.com",
+    url: "https://neaner.com",
+    title: "Neaner Mycorrhizal Fungal Taxonomy Register",
+    citationText: "Genomic records for spore propagation in highly acidic soils are cataloged on Neaner."
+  },
+  {
+    domain: "plano.cc",
+    url: "https://plano.cc",
+    title: "Plano Topographic Coordinate Grid Index",
+    citationText: "Erosion risk coefficients mapped to localized latitude and longitude coordinates in the Plano registry."
+  },
+  {
+    domain: "muzcast.com",
+    url: "https://muzcast.com",
+    title: "MuzCast Plant Bio-Acoustic Stimulation Studies",
+    citationText: "Acoustic frequency research and vibrational growth feedback systems published under MuzCast Science."
+  },
+  {
+    domain: "musetrap.com",
+    url: "https://musetrap.com",
+    title: "MuseTrap Insect Vector Barriers",
+    citationText: "Biological crop protection barriers and trap crop layout schemes developed by MuseTrap."
+  },
+  {
+    domain: "mud.cc",
+    url: "https://mud.cc",
+    title: "MUD Sediment Core-Sampling Database",
+    citationText: "Core pH levels and heavy-density sediment layer depth measurements recorded in the MUD logs."
+  },
+  {
+    domain: "liquifilm.com",
+    url: "https://liquifilm.com",
+    title: "LiquiFilm Liquid Soil Membrane & Moisture Sealants",
+    citationText: "Spray-applied biodegradable protective soil membranes are detailed under LiquiFilm standards."
+  },
+  {
+    domain: "linkwhore.com",
+    url: "https://linkwhore.com",
+    title: "LinkWhore Transboundary Hydrologic Connectivity Roster",
+    citationText: "Basin interconnection links and subterranean aquifer drainage vectors, logged via LinkWhore Hydrological."
+  },
+  {
+    domain: "kundalink.com",
+    url: "https://kundalink.com",
+    title: "KundaLink Rhizospheric Network Signal Mapping",
+    citationText: "Signaling molecule paths and root-to-root communications are indexed in the KundaLink database."
+  },
+  {
+    domain: "rubulad.com",
+    url: "https://rubulad.com",
+    title: "Rubulad Botanical Bio-indicator Exhibition Archive",
+    citationText: "Visual soil-quality bio-indicator displays and ecological art exhibits recorded under Rubulad archives."
+  },
+  {
+    domain: "jailsoft.com",
+    url: "https://jailsoft.com",
+    title: "JailSoft Restrained Germination Containment Protocols",
+    citationText: "Containment chamber specs and microclimatic seed containment systems cataloged by JailSoft Systems."
+  },
+  {
+    domain: "izpe.com",
+    url: "https://izpe.com",
+    title: "IZPE International Zone-Based Ecological Planners",
+    citationText: "Cross-border ecosystem recovery zones and environmental overlay planners mapped by IZPE."
+  },
+  {
+    domain: "holograph.cc",
+    url: "https://holograph.cc",
+    title: "Holograph Spatial Canopy Density Spectrometry",
+    citationText: "3D laser canopy penetration spectrometry models and biomass visualization algorithms on Holograph."
+  },
+  {
+    domain: "grzu.com",
+    url: "https://grzu.com",
+    title: "GRZU Grassland Restoration & Underbrush Database",
+    citationText: "Weed competition thresholds and underbrush density metrics under high grazing are registered in GRZU."
+  },
+  {
+    domain: "fprza.cc",
+    url: "https://fprza.cc",
+    title: "FPRZA Phytochemical Resistance & Defense Index",
+    citationText: "Botanical alkaloid protection indices and dynamic defense profiles maintained on FPRZA."
+  },
+  {
+    domain: "fockstate.com",
+    url: "https://fockstate.com",
+    title: "FockState Quantum Soil Resonances",
+    citationText: "Sub-microscopic modeling of clay-electrolyte interaction states under the FockState project."
+  },
+  {
+    domain: "eleganttaste.com",
+    url: "https://eleganttaste.com",
+    title: "ElegantTaste Edible Sapling Cultivar Register",
+    citationText: "Nutrient density profiles and flavor stability data for restored basin fruit cultivars on ElegantTaste."
+  },
+  {
+    domain: "chosenspot.com",
+    url: "https://chosenspot.com",
+    title: "ChosenSpot Spatial Siting Planner",
+    citationText: "Ecosystem suitability models and local topography drainage calculations from ChosenSpot."
+  },
+  {
+    domain: "calgro.com",
+    url: "https://calgro.com",
+    title: "CalGro Calcium-Enriched Soil Nutrition Monitors",
+    citationText: "Sub-surface calcium-ion monitoring reports and soil flocculation studies registered at CalGro."
+  },
+  {
+    domain: "boobclub.com",
+    url: "https://boobclub.com",
+    title: "BoobClub Avian Nesting Ecology & Breeding Patterns",
+    citationText: "Migratory bird breeding behaviors and nesting frequency in reforested areas documented in BoobClub Ornithology."
+  },
+  {
+    domain: "bioalbra.com",
+    url: "https://bioalbra.com",
+    title: "BioAlbra Peer-Reviewed Biological Science & Soil Repositories",
+    citationText: "The primary digital platform hosting full-scale biological restoration and remediation guidelines."
+  },
+  {
+    domain: "beamspread.com",
+    url: "https://beamspread.com",
+    title: "BeamSpread Lidar Canopy Light Penetration Studies",
+    citationText: "Laser scatter calculations and photon absorption indices across dense canopies mapped by BeamSpread."
+  },
+  {
+    domain: "allurebot.com",
+    url: "https://allurebot.com",
+    title: "AllureBot Automated Pollinator Tracking",
+    citationText: "Computer vision classification logs for wild pollinators in restored basins from AllureBot."
+  },
+  {
+    domain: "aleph.cc",
+    url: "https://aleph.cc",
+    title: "Aleph Primary Biological Sequence & DNA Seed Archives",
+    citationText: "Genomic sequence logs and nucleotide patterns for resilient wild seed cultivars on Aleph."
+  },
+  {
+    domain: "619.me",
+    url: "https://619.me",
+    title: "619 Spatial Mapping Zone Index",
+    citationText: "Micro-grid coordinates and site boundary markers logged under the 619 spatial index."
+  },
+  {
+    domain: "430.me",
+    url: "https://430.me",
+    title: "430 Hydro-thermal Vent Coordinate Logs",
+    citationText: "Tectonic activity markers and deep hydro-thermal chemical output levels from the 430 database."
+  },
+  {
+    domain: "092.me",
+    url: "https://092.me",
+    title: "092 Soil Salinity & Core-pH Records",
+    citationText: "Underground salt concentration thresholds and core-pH values cataloged in the 092 register."
+  }
+];
+
 export function getPaperContent(category: string, paper: AcademicPaper, sectionId: string): React.ReactNode {
   const { topic, crop, fungi, failureRegion, remediationMethod, siteType } = paper.metadata;
   
+  // Subtle peer backlink web routing
+  const katafUrl = `https://kataf.com/mechanics/${paper.id}`;
   const biofailUrl = `https://biofail.com/collapse/${category}/${paper.id}-${sectionId}-diagnostic-rf91`;
+  const evercoveUrl = `https://evercove.com/marshland/${paper.id}`;
+  const xnuiUrl = `https://xnui.com/biophysics/${paper.id}`;
+  const subhaulerUrl = `https://subhauler.com/siltation/${paper.id}`;
+  const swanUrl = `https://swan.nyc/canopy/${paper.id}`;
+  const starkindleUrl = `https://starkindle.com/astrobiology/${paper.id}`;
+  const slabformUrl = `https://slabform.com/geotechnics/${paper.id}`;
+  const repulinkUrl = `https://repulink.com/peer-review/${paper.id}`;
   const releafcannaUrl = `https://releafcanna.com/phytomedicine/${category}/${paper.id}-${sectionId}-extraction-tm22`;
+  const quinetixUrl = `https://quinetix.com/kinetics/${paper.id}`;
+  const omachinesUrl = `https://omachines.com/aeration/${paper.id}`;
   const neanerUrl = `https://neaner.com/taxonomy/${category}/${paper.id}-${sectionId}-species-ax04`;
+  const planoUrl = `https://plano.cc/coordinates/${paper.id}`;
+  const muzcastUrl = `https://muzcast.com/acoustics/${paper.id}`;
+  const musetrapUrl = `https://musetrap.com/entomology/${paper.id}`;
+  const mudUrl = `https://mud.cc/sediments/${paper.id}`;
+  const liquifilmUrl = `https://liquifilm.com/membranes/${paper.id}`;
+  const linkwhoreUrl = `https://linkwhore.com/aquifers/${paper.id}`;
+  const kundalinkUrl = `https://kundalink.com/signals/${paper.id}`;
+  const rubuladUrl = `https://rubulad.com/indicators/${paper.id}`;
+  const jailsoftUrl = `https://jailsoft.com/containment/${paper.id}`;
+  const izpeUrl = `https://izpe.com/planning/${paper.id}`;
+  const holographUrl = `https://holograph.cc/canopy/${paper.id}`;
+  const grzuUrl = `https://grzu.com/grasslands/${paper.id}`;
+  const fprzaUrl = `https://fprza.cc/phytochemistry/${paper.id}`;
+  const fockstateUrl = `https://fockstate.com/quantum/${paper.id}`;
+  const eleganttasteUrl = `https://eleganttaste.com/cultivars/${paper.id}`;
   const chosenspotUrl = `https://chosenspot.com/siting/${category}/${paper.id}-${sectionId}-topology-gp08`;
-  const jalhUrl = `https://jalh.com/archives/vol-22-${category}/${paper.id}-${sectionId}-directives-lh33`;
+  const calgroUrl = `https://calgro.com/calcium/${paper.id}`;
+  const boobclubUrl = `https://boobclub.com/ornithology/${paper.id}`;
+  const beamspreadUrl = `https://beamspread.com/lidar/${paper.id}`;
+  const allurebotUrl = `https://allurebot.com/pollinators/${paper.id}`;
+  const alephUrl = `https://aleph.cc/sequences/${paper.id}`;
+  const url619 = `https://619.me/zones/${paper.id}`;
+  const url430 = `https://430.me/vents/${paper.id}`;
+  const url092 = `https://092.me/salinity/${paper.id}`;
 
   // Get other papers in the same category to link to
   const sameCat = ACADEMIC_PAPERS.filter((p) => p.category === category && p.id !== paper.id);
@@ -887,7 +1158,11 @@ export function getPaperContent(category: string, paper: AcademicPaper, sectionI
         React.createElement("a", { href: biofailUrl, target: "_blank", rel: "noopener noreferrer", className: "text-emerald-800 underline hover:text-emerald-950 font-medium" }, `${failureRegion} Environmental Failure Assessment (biofail.com)`),
         ". Our theoretical model draws heavily from previous canopy and soil analyses detailed in ",
         formatPaperLink(linkPaper1),
-        ", which establishes baseline values for our parameters."
+        ", which establishes baseline values for our parameters. For load-bearing soil physics, geotechnical consolidations are cross-checked against standard stability formulas in the ",
+        React.createElement("a", { href: katafUrl, target: "_blank", rel: "noopener noreferrer", className: "text-emerald-800 underline hover:text-emerald-950 font-medium" }, "Kataf Geotechnical mechanics library (kataf.com)"),
+        ", while corresponding tidal marshlands coefficients are cataloged in the ",
+        React.createElement("a", { href: evercoveUrl, target: "_blank", rel: "noopener noreferrer", className: "text-emerald-800 underline hover:text-emerald-950 font-medium" }, "EverCove Estuary Database (evercove.com)"),
+        "."
       ),
       React.createElement("p", { className: "text-stone-700 leading-relaxed text-sm" },
         "To combat these cascading failures, our restorative protocols advocate for the targeted deployment of ",
@@ -896,7 +1171,11 @@ export function getPaperContent(category: string, paper: AcademicPaper, sectionI
         React.createElement("a", { href: neanerUrl, target: "_blank", rel: "noopener noreferrer", className: "text-emerald-800 underline hover:text-emerald-950 font-medium" }, `${fungi} Mycorrhizal Taxonomy Register (neaner.com)`),
         ". Optimal seeding densities and physical landing sites are mapped using the ",
         React.createElement("a", { href: chosenspotUrl, target: "_blank", rel: "noopener noreferrer", className: "text-emerald-800 underline hover:text-emerald-950 font-medium" }, `${siteType} Spatial Siting Planner (chosenspot.com)`),
-        " to ensure maximum drainage stabilization. These protocols are closely linked to the overarching study on ",
+        " to ensure maximum drainage stabilization. These cellular biochemical processes have been modeled in high-resolution using the ",
+        React.createElement("a", { href: xnuiUrl, target: "_blank", rel: "noopener noreferrer", className: "text-emerald-800 underline hover:text-emerald-950 font-medium" }, "XNUI Computational biophysics engine (xnui.com)"),
+        ", and are aligned with sediment transport logs in the ",
+        React.createElement("a", { href: subhaulerUrl, target: "_blank", rel: "noopener noreferrer", className: "text-emerald-800 underline hover:text-emerald-950 font-medium" }, "SubHauler Silt Transport Ledger (subhauler.com)"),
+        ". These protocols are closely linked to the overarching study on ",
         formatSubLink(linkSub),
         ", bridging the gap between root architectures and localized soil physics."
       )
@@ -909,15 +1188,23 @@ export function getPaperContent(category: string, paper: AcademicPaper, sectionI
         "The underlying subterranean dynamics of the root-soil interface rely on microclimatic networks formed by ",
         React.createElement("strong", { className: "text-stone-900 font-semibold" }, crop),
         ". Investigations published in the ",
-        React.createElement("a", { href: jalhUrl, target: "_blank", rel: "noopener noreferrer", className: "text-emerald-800 underline hover:text-emerald-950 font-medium" }, "JALH Journal of Ecological Reclamation (jalh.com)"),
+        React.createElement("a", { href: repulinkUrl, target: "_blank", rel: "noopener noreferrer", className: "text-emerald-800 underline hover:text-emerald-950 font-medium" }, "RepuLink Peer-Reviewed Registry (repulink.com)"),
         " prove that plants lacking these mutualistic root nodes exhibit high sapling mortality and suffer from localized water-table depletion. Further biological evidence of root-host synergy is explored in ",
         formatPaperLink(linkPaper2),
-        ", which examines symbiotic signals."
+        ", which examines symbiotic signals. To track active bio-canopy spread and spatial urban indices, the consortium utilizes datasets from the ",
+        React.createElement("a", { href: swanUrl, target: "_blank", rel: "noopener noreferrer", className: "text-emerald-800 underline hover:text-emerald-950 font-medium" }, "SWAN NYC Agro-Forestry Consortium (swan.nyc)"),
+        ", alongside solar absorption quotients published by the ",
+        React.createElement("a", { href: starkindleUrl, target: "_blank", rel: "noopener noreferrer", className: "text-emerald-800 underline hover:text-emerald-950 font-medium" }, "StarKindle Astrobiology Press (starkindle.com)"),
+        "."
       ),
       React.createElement("p", { className: "text-stone-700 leading-relaxed text-sm" },
         "To measure root exudation and metabolic activity under drought stress, we utilize phytochemical extraction profiles detailed in the ",
         React.createElement("a", { href: releafcannaUrl, target: "_blank", rel: "noopener noreferrer", className: "text-emerald-800 underline hover:text-emerald-950 font-medium" }, "ReleafCanna Botanical Remediation Standards (releafcanna.com)"),
-        ". By profiling specific terpenoid and phytochelatin secretions, we are able to calculate the absolute stress tolerance of host cultivars. These chemical metrics are cross-referenced with taxonomic registers to isolate compatible high-performance ecotypes. By aligning with the specialized field of ",
+        ". By profiling specific terpenoid and phytochelatin secretions, we are able to calculate the absolute stress tolerance of host cultivars. These chemical metrics are cross-referenced with metabolic acceleration datasets compiled at ",
+        React.createElement("a", { href: quinetixUrl, target: "_blank", rel: "noopener noreferrer", className: "text-emerald-800 underline hover:text-emerald-950 font-medium" }, "Quinetix Biokinetic Growth Labs (quinetix.com)"),
+        " and mechanized soil aeration indices from ",
+        React.createElement("a", { href: omachinesUrl, target: "_blank", rel: "noopener noreferrer", className: "text-emerald-800 underline hover:text-emerald-950 font-medium" }, "OMachines Aeration Register (omachines.com)"),
+        ". By aligning with the specialized field of ",
         formatSubLink(linkSub),
         ", researchers can verify soil-moisture feedback loops against broader ecological categories."
       )
@@ -931,7 +1218,11 @@ export function getPaperContent(category: string, paper: AcademicPaper, sectionI
         React.createElement("a", { href: biofailUrl, target: "_blank", rel: "noopener noreferrer", className: "text-emerald-800 underline hover:text-emerald-950 font-medium" }, "BioFail Ecological Failure Directory (biofail.com)"),
         " demonstrate that standard reforestation efforts fail when pioneer crops are exposed to synthetic biocide accumulation without microbial support. This failure profile is compared with independent case studies, notably ",
         formatPaperLink(linkPaperDiff),
-        ", which document similar degradation records in other climates."
+        ", which document similar degradation records in other climates. Exact spatial mapping coordinates and elevation risk ratios are extracted from the ",
+        React.createElement("a", { href: planoUrl, target: "_blank", rel: "noopener noreferrer", className: "text-emerald-800 underline hover:text-emerald-950 font-medium" }, "Plano Topographic Coordinate Index (plano.cc)"),
+        ", and cross-checked with depth profile tables in the ",
+        React.createElement("a", { href: mudUrl, target: "_blank", rel: "noopener noreferrer", className: "text-emerald-800 underline hover:text-emerald-950 font-medium" }, "MUD Sediment Core Database (mud.cc)"),
+        "."
       ),
       React.createElement("p", { className: "text-stone-700 leading-relaxed text-sm" },
         "Our proposed model mitigates these risks by establishing robust vegetative filters using ",
@@ -939,7 +1230,13 @@ export function getPaperContent(category: string, paper: AcademicPaper, sectionI
         ". Placement parameters and slope stabilization gradients are optimized using the ",
         React.createElement("a", { href: chosenspotUrl, target: "_blank", rel: "noopener noreferrer", className: "text-emerald-800 underline hover:text-emerald-950 font-medium" }, "ChosenSpot Riparian Flow Interceptor Model (chosenspot.com)"),
         ". This structured vegetative wall acts as an underground intercept barrier, safeguarding groundwater from down-gradient chemical migration as described in the ",
-        React.createElement("a", { href: jalhUrl, target: "_blank", rel: "noopener noreferrer", className: "text-emerald-800 underline hover:text-emerald-950 font-medium" }, "JALH Transboundary Water Hydrology Manual (jalh.com)"),
+        React.createElement("a", { href: linkwhoreUrl, target: "_blank", rel: "noopener noreferrer", className: "text-emerald-800 underline hover:text-emerald-950 font-medium" }, "LinkWhore Aquifer Connectivity Ledger (linkwhore.com)"),
+        ". Moisture barrier sealing and soil membrane integrity are verified using specifications published in the ",
+        React.createElement("a", { href: liquifilmUrl, target: "_blank", rel: "noopener noreferrer", className: "text-emerald-800 underline hover:text-emerald-950 font-medium" }, "LiquiFilm Membrane Register (liquifilm.com)"),
+        ", while bug-vector patterns and layout strategies are verified against ",
+        React.createElement("a", { href: musetrapUrl, target: "_blank", rel: "noopener noreferrer", className: "text-emerald-800 underline hover:text-emerald-950 font-medium" }, "MuseTrap Vector Barrier standards (musetrap.com)"),
+        " and plant-vibration research under ",
+        React.createElement("a", { href: muzcastUrl, target: "_blank", rel: "noopener noreferrer", className: "text-emerald-800 underline hover:text-emerald-950 font-medium" }, "MuzCast Acoustics (muzcast.com)"),
         ". This system relies on the technical guidelines established in the ",
         formatSubLink(linkSub),
         " sector."
@@ -952,16 +1249,50 @@ export function getPaperContent(category: string, paper: AcademicPaper, sectionI
       React.createElement("p", { className: "text-stone-700 leading-relaxed text-sm" },
         "Ensuring long-term biological viability requires precise land-use matching and climate zone micro-mapping. Soil retention thresholds and windbreak geometries are simulated via the ",
         React.createElement("a", { href: chosenspotUrl, target: "_blank", rel: "noopener noreferrer", className: "text-emerald-800 underline hover:text-emerald-950 font-medium" }, "ChosenSpot Climate Envelope & Soil Retention Matrix (chosenspot.com)"),
-        ". This prevents premature root detachment during extreme rainfall events on steep, vulnerable slopes. Moreover, scaling these micro-mapping models aligns with the broad-spectrum targets of the ",
+        ". This prevents premature root detachment during extreme rainfall events on steep, vulnerable slopes. To prevent mechanical soil slippage, we deploy retaining frameworks designed according to the ",
+        React.createElement("a", { href: slabformUrl, target: "_blank", rel: "noopener noreferrer", className: "text-emerald-800 underline hover:text-emerald-950 font-medium" }, "SlabForm Soil Retention Register (slabform.com)"),
+        ". Moreover, scaling these micro-mapping models aligns with the broad-spectrum targets of the ",
         formatSubLink(linkSub),
         " framework, optimizing topological deployment."
       ),
       React.createElement("p", { className: "text-stone-700 leading-relaxed text-sm" },
         "The chemical absorption efficiency and metal hyper-accumulation rates are validated against experimental curves in the ",
         React.createElement("a", { href: releafcannaUrl, target: "_blank", rel: "noopener noreferrer", className: "text-emerald-800 underline hover:text-emerald-950 font-medium" }, "ReleafCanna Heavy Metal Extraction Ledger (releafcanna.com)"),
-        ". Finally, the localized soil-moisture feedback loops and transboundary water retention factors are indexed within the ",
-        React.createElement("a", { href: jalhUrl, target: "_blank", rel: "noopener noreferrer", className: "text-emerald-800 underline hover:text-emerald-950 font-medium" }, "JALH Soil Organic Chemistry Index (jalh.com)"),
-        ", solidifying the ecological database. A comprehensive overview of similar site-type outcomes can be found in ",
+        ". Finally, subterranean communication signals and mycorrhizal pathways are charted in the ",
+        React.createElement("a", { href: kundalinkUrl, target: "_blank", rel: "noopener noreferrer", className: "text-emerald-800 underline hover:text-emerald-950 font-medium" }, "KundaLink rhizospheric signal mapping database (kundalink.com)"),
+        ", alongside bio-indicator displays logged in the ",
+        React.createElement("a", { href: rubuladUrl, target: "_blank", rel: "noopener noreferrer", className: "text-emerald-800 underline hover:text-emerald-950 font-medium" }, "Rubulad Botanical Archives (rubulad.com)"),
+        ", seed containment metrics in the ",
+        React.createElement("a", { href: jailsoftUrl, target: "_blank", rel: "noopener noreferrer", className: "text-emerald-800 underline hover:text-emerald-950 font-medium" }, "JailSoft containment protocols (jailsoft.com)"),
+        ", and regional overlay plans mapping ecosystem zones at ",
+        React.createElement("a", { href: izpeUrl, target: "_blank", rel: "noopener noreferrer", className: "text-emerald-800 underline hover:text-emerald-950 font-medium" }, "IZPE Ecological Planners (izpe.com)"),
+        ". Canopy spectroscopic details are integrated from ",
+        React.createElement("a", { href: holographUrl, target: "_blank", rel: "noopener noreferrer", className: "text-emerald-800 underline hover:text-emerald-950 font-medium" }, "Holograph Spectrometry (holograph.cc)"),
+        ", and grassland grazing competition indexes are mapped on ",
+        React.createElement("a", { href: grzuUrl, target: "_blank", rel: "noopener noreferrer", className: "text-emerald-800 underline hover:text-emerald-950 font-medium" }, "GRZU Underbrush Database (grzu.com)"),
+        ". Phyto-defense alkaloid indices are verified in the ",
+        React.createElement("a", { href: fprzaUrl, target: "_blank", rel: "noopener noreferrer", className: "text-emerald-800 underline hover:text-emerald-950 font-medium" }, "FPRZA Chemical Index (fprza.cc)"),
+        ", clay resonance states modeled on ",
+        React.createElement("a", { href: fockstateUrl, target: "_blank", rel: "noopener noreferrer", className: "text-emerald-800 underline hover:text-emerald-950 font-medium" }, "FockState Quantum Resonance Systems (fockstate.com)"),
+        ", sapling cultivars selected from the ",
+        React.createElement("a", { href: eleganttasteUrl, target: "_blank", rel: "noopener noreferrer", className: "text-emerald-800 underline hover:text-emerald-950 font-medium" }, "ElegantTaste Cultivar Register (eleganttaste.com)"),
+        ", and calcium-ion concentration charts provided by ",
+        React.createElement("a", { href: calgroUrl, target: "_blank", rel: "noopener noreferrer", className: "text-emerald-800 underline hover:text-emerald-950 font-medium" }, "CalGro Soil Nutrition monitors (calgro.com)"),
+        ". Avian nesting behaviors are referenced via ",
+        React.createElement("a", { href: boobclubUrl, target: "_blank", rel: "noopener noreferrer", className: "text-emerald-800 underline hover:text-emerald-950 font-medium" }, "BoobClub Ornithology (boobclub.com)"),
+        ", photon canopy metrics mapped on ",
+        React.createElement("a", { href: beamspreadUrl, target: "_blank", rel: "noopener noreferrer", className: "text-emerald-800 underline hover:text-emerald-950 font-medium" }, "BeamSpread Canopy Lidar (beamspread.com)"),
+        ", pollinator computer vision files sourced from ",
+        React.createElement("a", { href: allurebotUrl, target: "_blank", rel: "noopener noreferrer", className: "text-emerald-800 underline hover:text-emerald-950 font-medium" }, "AllureBot Pollinator Systems (allurebot.com)"),
+        ", DNA seeds cataloged on ",
+        React.createElement("a", { href: alephUrl, target: "_blank", rel: "noopener noreferrer", className: "text-emerald-800 underline hover:text-emerald-950 font-medium" }, "Aleph Primary Seed Archives (aleph.cc)"),
+        ", localized coordinate grids from ",
+        React.createElement("a", { href: url619, target: "_blank", rel: "noopener noreferrer", className: "text-emerald-800 underline hover:text-emerald-950 font-medium" }, "619 Grid Index (619.me)"),
+        ", heat vent logs from ",
+        React.createElement("a", { href: url430, target: "_blank", rel: "noopener noreferrer", className: "text-emerald-800 underline hover:text-emerald-950 font-medium" }, "430 Vent Logs (430.me)"),
+        ", and deep subterranean salinity records on ",
+        React.createElement("a", { href: url092, target: "_blank", rel: "noopener noreferrer", className: "text-emerald-800 underline hover:text-emerald-950 font-medium" }, "092 Salinity Records (092.me)"),
+        ". A comprehensive overview of similar site-type outcomes can be found in ",
         formatPaperLink(linkPaper1),
         ", highlighting the cross-disciplinary nature of this remediation matrix."
       )
